@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Emperor Don Quixote</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      z-index: 1000;
+    }
+    .navbar a {
+      color: #fff;
+      margin-right: 15px;
+      text-decoration: none;
+    }
+    .search-bar {
+      padding: 5px;
+    }
+    .hero {
+      position: relative;
+      height: 70vh;
+      overflow: hidden;
+    }
+    #bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero .overlay {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.4);
+      text-align: center;
+      padding: 0 20px;
+    }
+    .featured-courses, .learning-paths, .success-stories {
+      padding: 60px 20px;
+      margin-top: 20px;
+    }
+    .course-cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .course-card {
+      background: #f4f4f4;
+      padding: 20px;
+      width: 250px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .course-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .learning-paths button {
+      padding: 10px 20px;
+      margin-top: 20px;
+    }
+    .testimonial {
+      background: #eee;
+      padding: 20px;
+      margin: 10px auto;
+      max-width: 600px;
+      border-radius: 8px;
+    }
+    .footer {
+      background: #222;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .footer a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .footer button {
+      padding: 10px 20px;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      width: 300px;
+      border-radius: 8px;
+      position: relative;
+    }
+    #close-modal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <span class="brand">Empire Admin</span>
+      <a href="#">Galactic News</a>
+      <a href="#">Imperial Treasury</a>
+      <a href="#">Fleet Status</a>
+    </div>
+    <div class="nav-right">
+      <input type="text" placeholder="Search" class="search-bar" />
+    </div>
+  </nav>
+
+  <header class="hero">
+    <video autoplay muted loop id="bg-video">
+      <source src="placeholder-video.mp4" type="video/mp4" />
+    </video>
+    <div class="overlay">
+      <h1>Welcome, Don Quixote</h1>
+      <p id="tagline">Defender of the Known Universe</p>
+    </div>
+  </header>
+
+  <section id="courses" class="featured-courses">
+    <h2>Featured Courses</h2>
+    <div class="course-cards">
+      <div class="course-card">
+        <img src="placeholder-course1.jpg" alt="Course 1" />
+        <h3>Interstellar Diplomacy 101</h3>
+        <p class="instructor">Instructor: Maria of the Stars</p>
+        <p class="description">Learn the art of negotiating planetary alliances and avoiding cosmic conflicts.</p>
+      </div>
+      <div class="course-card">
+        <img src="placeholder-course2.jpg" alt="Course 2" />
+        <h3>Quantum Navigation</h3>
+        <p class="instructor">Instructor: Sir Isaac</p>
+        <p class="description">Master the techniques of navigating wormholes and temporal anomalies.</p>
+      </div>
+      <div class="course-card">
+        <img src="placeholder-course3.jpg" alt="Course 3" />
+        <h3>Robotics for Royalty</h3>
+        <p class="instructor">Instructor: Lady Ada</p>
+        <p class="description">Build your own mechanical companions for courtly duties and adventures.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="paths" class="learning-paths">
+    <h2>Learning Paths</h2>
+    <p>Discover your ideal path through the cosmos.</p>
+    <button id="start-quiz">Start Quiz</button>
+    <div id="quiz" class="hidden">
+      <form id="quiz-form">
+        <p>1. When exploring new worlds, you prefer:</p>
+        <label><input type="radio" name="q1" value="hands-on" /> Hands-on experience</label><br />
+        <label><input type="radio" name="q1" value="theory" /> Reading manuals first</label>
+        <p>2. Choose your training style:</p>
+        <label><input type="radio" name="q2" value="visual" /> Visual</label><br />
+        <label><input type="radio" name="q2" value="auditory" /> Auditory</label><br />
+        <label><input type="radio" name="q2" value="kinesthetic" /> Kinesthetic</label><br />
+        <button type="submit">Submit</button>
+      </form>
+      <div id="quiz-result"></div>
+    </div>
+  </section>
+
+  <section id="stories" class="success-stories">
+    <h2>Success Stories</h2>
+    <div class="testimonial">
+      <p>"This platform guided me from squire to knight of the digital realm!"</p>
+      <p>- Sancho Panza</p>
+    </div>
+    <div class="testimonial">
+      <p>"I conquered my fear of starship maintenance thanks to DQ's courses."</p>
+      <p>- Dulcinea</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <a href="#">Blog</a>
+    <a href="#">FAQ</a>
+    <a href="#">Privacy Policy</a>
+    <button id="contact-btn">Contact Us</button>
+  </footer>
+
+  <div id="contact-modal" class="modal hidden">
+    <div class="modal-content">
+      <span id="close-modal">&times;</span>
+      <h2>Contact Support</h2>
+      <form>
+        <label>Name:<br /><input type="text" /></label><br />
+        <label>Email:<br /><input type="email" /></label><br />
+        <label>Message:<br /><textarea></textarea></label><br />
+        <button type="submit">Send</button>
+      </form>
+      <p>Support available 24/7 across all galaxies.</p>
+    </div>
+  </div>
+
+  <script>
+    const taglines = [
+      "Defender of the Known Universe",
+      "Champion of La Mancha",
+      "Knight of the Cosmic Order",
+      "Guardian of Learning"
+    ];
+    let taglineIndex = 0;
+    const taglineElement = document.getElementById("tagline");
+    setInterval(() => {
+      taglineIndex = (taglineIndex + 1) % taglines.length;
+      taglineElement.textContent = taglines[taglineIndex];
+    }, 3000);
+
+    const startQuizBtn = document.getElementById("start-quiz");
+    const quizDiv = document.getElementById("quiz");
+    startQuizBtn.addEventListener("click", () => {
+      quizDiv.classList.remove("hidden");
+      startQuizBtn.style.display = "none";
+    });
+
+    const quizForm = document.getElementById("quiz-form");
+    const quizResult = document.getElementById("quiz-result");
+    quizForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      quizResult.textContent = "Your learning path will be revealed soon!";
+    });
+
+    const contactBtn = document.getElementById("contact-btn");
+    const contactModal = document.getElementById("contact-modal");
+    const closeModal = document.getElementById("close-modal");
+
+    contactBtn.addEventListener("click", () => contactModal.classList.remove("hidden"));
+    closeModal.addEventListener("click", () => contactModal.classList.add("hidden"));
+    window.addEventListener("click", (e) => {
+      if (e.target === contactModal) {
+        contactModal.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+</html>
