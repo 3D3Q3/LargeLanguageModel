@@ -1,2 +1,10 @@
 feedparser>=6.0
 pyttsx3>=2.90
+feedparser>=6.0
+pyttsx3>=2.90
+pystray>=0.19
+Pillow>=9.0
+PyYAML>=6.0
+requests>=2.31
+paramiko>=3.3
+win10toast>=0.9
