@@ -1,0 +1,175 @@
+# Sample configuration for the Genius assistant.
+author: "Don-Quixote De La Mancha 2025 3LL3 LLC"
+application_name: "Genius"
+# icon: "C:/Automation/genius.ico"
+
+tasks:
+  open_dashboard:
+    type: open_url
+    description: "Company dashboard"
+    command: "https://portal.example.com/dashboard"
+
+  custom_shell:
+    type: run_powershell
+    description: "Launch customized shell"
+    command: "C:/Automation/start-shell.ps1"
+
+  run_pipeline:
+    type: run_pipeline
+    description: "Run nightly ETL job"
+    command: "C:/Automation/pipeline.ps1"
+    confirmation: "Execute the nightly pipeline now?"
+    args:
+      cwd: "C:/Automation"
+
+  pipeline_with_parameters:
+    type: form_command
+    description: "Parameterized pipeline trigger"
+    command: "powershell.exe -File C:/Automation/pipeline.ps1 -Environment {environment} -Date {date} -RunId {run_id}"
+    form:
+      title: "Run Pipeline"
+      description: "Seed values are generated automatically to keep the sample job running."
+      submit_label: "Trigger"
+      fields:
+        - name: environment
+          label: "Environment"
+          type: choice
+          options: ["dev", "qa", "prod"]
+          generate: "choice"
+        - name: date
+          label: "Date"
+          generate: "timestamp"
+        - name: run_id
+          label: "Run ID"
+          generate: "token"
+          helper: "Used to cross reference logs in the operations portal."
+
+  azure_release:
+    type: form_command
+    description: "Promote build to Azure App Service"
+    command: "powershell.exe -File C:/Automation/release.ps1 -Subscription {{subscription}} -Slot {{slot}} -Build {{build}} -Notes \"{{notes}}\""
+    form:
+      title: "Azure Release"
+      description: "Fill in the deployment metadata before pushing the sample build."
+      submit_label: "Deploy"
+      cancel_label: "Skip"
+      fields:
+        - name: subscription
+          label: "Subscription"
+          type: choice
+          options: ["SUB-41C8", "SUB-7BA3"]
+          helper: "Select the tenant receiving this release."
+        - name: slot
+          label: "Slot"
+          default: "slot-17"
+        - name: build
+          label: "Build Tag"
+          generate: "build"
+        - name: notes
+          label: "Release Notes"
+          type: multiline
+          default: "Rolled up hotfix telemetry sync."
+
+  ssh_deploy:
+    type: run_ssh
+    description: "Deploy to automation node"
+    args:
+      hostname: "automation.example.com"
+      username: "deploy"
+      command: "./deploy-latest.sh"
+
+  ftp_publish:
+    type: run_ftp
+    description: "Publish website assets"
+    args:
+      host: "ftp.example.com"
+      username: "web"
+      password: "w1ntr-crest"
+      actions:
+        - type: upload
+          local: "C:/Projects/site/build.zip"
+          remote: "public_html/build.zip"
+
+  show_notes:
+    type: open_file
+    command: "C:/Knowledge/notes.md"
+
+  info_page:
+    type: show_info
+    args:
+      message: "Reminder RPT-283: Review AI agent outcomes before 4 PM."
+
+  voice_automations:
+    type: voice_listener
+    args:
+      commands:
+        - phrase: "open dashboard"
+          task: "open_dashboard"
+        - phrase: "run pipeline"
+          task: "run_pipeline"
+        - phrase: "deploy azure"
+          task: "azure_release"
+
+  ask_ollama:
+    type: llm_query
+    args:
+      provider: "ollama"
+      model: "llama3"
+      prompt: "Summarize outstanding reminders"
+
+  ask_openai:
+    type: llm_query
+    args:
+      provider: "openai"
+      model: "gpt-4o-mini"
+      prompt: "Draft a status update for the automation progress"
+
+menu:
+  - title: "Launch"
+    submenu:
+      - title: "Custom Shell"
+        task: "custom_shell"
+      - title: "Dashboard"
+        task: "open_dashboard"
+  - title: "Pipelines"
+    submenu:
+      - title: "Run Default"
+        task: "run_pipeline"
+      - title: "Run With Parameters"
+        task: "pipeline_with_parameters"
+      - title: "Azure Release"
+        task: "azure_release"
+  - title: "Cloud & Deploy"
+    submenu:
+      - title: "SSH Deploy"
+        task: "ssh_deploy"
+      - title: "FTP Publish"
+        task: "ftp_publish"
+  - title: "Notes"
+    task: "show_notes"
+  - title: "Information"
+    task: "info_page"
+  - title: "Voice Automations"
+    task: "voice_automations"
+  - title: "Ask Ollama"
+    task: "ask_ollama"
+  - title: "Ask OpenAI"
+    task: "ask_openai"
+  - separator: true
+  - title: "Quit"
+    task: "quit"
+
+voice:
+  enabled: false
+  hotkey: "ctrl+alt+g"
+  wake_phrase: "hey genius"
+
+llm:
+  enable_ollama: true
+  ollama_url: "http://localhost:11434"
+  enable_openai: false
+  openai_model: "gpt-4o-mini"
+  openai_api_key_env: "OPENAI_API_KEY"
+
+database:
+  path: "~/.genius/genius.db"
